@@ -5,9 +5,13 @@ var path = require('path');
 var mongoose = require('mongoose');
 const { Console, debug } = require('console');
 var bodyparser = require("body-parser");
+var crud = require('./routes/crud');
 
+app.use(express.json());
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(bodyparser.json());
+app.use('/', crud);
+
 
 
 //Connect to mongoDB via mongoose
@@ -24,50 +28,30 @@ app.use(express.static(__dirname + '/pages'));
 
 
 // JavaScript for a route 
-app.get('/',function(req,res){
-    //res.send("Here would be the page from the route");
-    res.sendFile(path.join(__dirname + '/pages/index.html'));
+app.get('/', function(req,res){ 
+    //res.send("here would be the page from the route");
+    res.sendFile(path.join(__dirname+"/pages/index.html"));
 });
 
-app.get('/about',function(req,res){
-    //res.send("Here would be the page from the route");
-    res.sendFile(path.join(__dirname + '/pages/about.html'));
+app.get('/about', function(req,res){ 
+    //res.send("here would be the page from the route");
+    res.sendFile(path.join(__dirname+"/pages/about.html"));
 });
 
-app.get('/contact',function(req,res){
-    //res.send("Here would be the page from the route");
-    res.sendFile(path.join(__dirname + '/pages/contact.html'));
+app.get('/contact', function(req,res){ 
+    //res.send("here would be the page from the route");
+    res.sendFile(path.join(__dirname+"/pages/contact.html"));
 });
 
-var Schema = mongoose.Schema;
-
-var GameData = new Schema({
-    gamename:String,
-    gamestudio:String
-})
-
-var GameModel = mongoose.model('games',GameData);
-
-app.get('/getdata',function(req,res){
-    GameModel.find({}).then(function(games){
-        res.json({games});
-        
-    })
+app.get('/games', function(req,res){ 
+    //res.send("here would be the page from the route");
+    res.sendFile(path.join(__dirname+"/pages/games.html"));
 });
 
-app.post('/deletegame', function(req,res){
-    console.log(req.body.game._id);
-    GameModel.findByIdAndDelete(req.body.game._id).exec();
-    res.redirect('games.html');
-})
-
-app.post('/updategame', function(req,res){
-    console.log(req.body)
-    GameModel.findByIdAndUpdate(req.body.id,{gamename:req.body.game}).then(function(){
-        res.redirect('games.html');
-    });
-
-})
+app.get('/update', function(req,res){ 
+    //res.send("here would be the page from the route");
+    res.sendFile(path.join(__dirname+"/pages/update.html"));
+});
 
 app.listen(3000, function(){
     console.log("Running on port 3000");
